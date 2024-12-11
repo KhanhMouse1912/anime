@@ -9,10 +9,17 @@ export default {
       { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        hid: 'google-translate',
+        src: 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit',
+        type: 'text/javascript'
+      }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['ant-design-vue/dist/antd.css', '~/assets//styles/global.css'],
+  css: ['~/assets/styles/tailwind.css', 'ant-design-vue/dist/antd.css', '~/assets//styles/global.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ['@/plugins/antd-ui', { src: './plugins/vue-carousel.js', mode: 'client' }],
@@ -21,7 +28,7 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: ['@nuxtjs/tailwindcss'],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -46,5 +53,14 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    loaders: {
+      sass: {
+        implementation: require('sass'),
+      },
+      scss: {
+        implementation: require('sass'),
+      },
+    },
+  },
 }
