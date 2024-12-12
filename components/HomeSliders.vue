@@ -64,9 +64,6 @@
 .slider {
   background: linear-gradient(0deg,#121315 0,#12131500 99%);
   transition: transform .3s ease-in-out;
-  &--wrapper {
-    background: #202125;
-  }
 }
 </style>
 
