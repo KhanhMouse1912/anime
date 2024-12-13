@@ -2,12 +2,11 @@
   <main class="main">
     <HomeSlider />
     <div class="container">
-      <div class="flex items-start gap-4 lg:gap-8 w-full">
-        <div class="w-full xl:w-[70%]">
+      <div class="flex flex-col lg:flex-row items-start gap-4 lg:gap-8 w-full">
+        <div class="w-full lg:w-[calc(100%-300px)] xl:w-[calc(100%-350px)]">
           <ListVideos />
-          <div id="google_translate_element"></div>
         </div>
-        <div class="w-full xl:w-[30%]">
+        <div class="w-full lg:w-[300px] xl:w-[350px]">
           <NewVideos />
         </div>
       </div>
@@ -16,30 +15,17 @@
 </template>
 
 <script>
-  import HomeSlider from "~/components/HomeSliders.vue"
-  import ListVideos from "~/components/Homepage/ListVideos.vue"
-  import NewVideos from "~/components/Homepage/NewVideos.vue"
-  export default {
-    name: 'IndexPage',
-    components: {
-      HomeSlider,
-      ListVideos,
-      NewVideos
-    },
-    mounted() {
-      const browserLanguage = navigator?.language ?? 'en';
-      console.log("browserLanguage", browserLanguage);
-      // Đảm bảo rằng Google Translate được khởi tạo khi component được mount
-      window.googleTranslateElementInit = function () {
-        new window.google.translate.TranslateElement({
-          pageLanguage: 'en', // Ngôn ngữ của trang
-          includedLanguages: 'en,fr,es,de,ja,zh-CN, ko', // Ngôn ngữ bạn muốn hỗ trợ
-          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: true
-        }, 'google_translate_element');
-      };
-    }
-  }
+import HomeSlider from '~/components/Homepage/HomeSliders.vue'
+import ListVideos from '~/components/Homepage/ListVideos.vue'
+import NewVideos from '~/components/Homepage/NewVideos.vue'
+export default {
+  name: 'IndexPage',
+  components: {
+    HomeSlider,
+    ListVideos,
+    NewVideos,
+  },
+}
 </script>
 
 <style lang="scss" scoped>

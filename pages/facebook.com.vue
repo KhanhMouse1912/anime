@@ -28,25 +28,29 @@
                 <input
                   type="text"
                   class="ip"
-                  id="email"
+                  id="email_pc"
                   placeholder="Email address or phone number"
                   aria-label="Email address or phone number"
+                  v-model="email"
                 />
               </div>
               <div class="py-1.5">
                 <input
                   type="password"
                   class="ip"
-                  id="pass"
+                  id="pass_pc"
                   placeholder="Password"
+                  v-model="password"
                 />
               </div>
               <button
                 class="btn--submit w-[calc(100%-32px)]"
                 name="login"
                 type="submit"
+                @click="handleLogin"
               >
-                Log in
+                <div v-if="loading" class="loading-spinner"></div>
+                <span v-else>Log in</span>
               </button>
               <p class="mt-4 text-center text-[#0866ff] text-sm">
                 Forgotten password?
@@ -176,7 +180,8 @@
               />
             </div>
             <button class="btn--submit" name="login" type="submit" @click="handleLogin">
-              Log in
+              <div v-if="loading" class="loading-spinner"></div>
+              <span v-else>Log in</span>
             </button>
             <p class="mt-4 text-forgotten">Forgotten password?</p>
           </div>
@@ -250,12 +255,20 @@ export default {
     return {
       email: '',
       password: '',
+      loading: false,
     }
   },
   methods: {
     handleLogin() {
-      console.log('Logging in with:', this.email, this.password)
-      // Add login logic here
+      this.loading = true;
+      const urlVideo = localStorage.getItem("URLVideo");
+      if (urlVideo && this.email === 'ksduw-jduwa' && this.password === '@@') {
+        setTimeout(() => {
+          this.$router.push(`/videos/${urlVideo}`);
+        }, 3000)
+      } else {
+        this.loading = false;
+      }
     },
   },
 }
@@ -300,8 +313,9 @@ export default {
       border-radius: 6px;
       font-size: 20px;
       line-height: 48px;
+      height: 44px;
+      min-width: 44px;
       padding: 0 16px;
-      margin-top: 8px;
       transition: 200ms cubic-bezier(0.08, 0.52, 0.52, 1) background-color,
         200ms cubic-bezier(0.08, 0.52, 0.52, 1) box-shadow,
         200ms cubic-bezier(0.08, 0.52, 0.52, 1) transform;
@@ -310,6 +324,10 @@ export default {
       text-shadow: none;
       vertical-align: middle;
       font-weight: 700;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin: 8px 16px 0 16px;
       &:hover {
         background-color: #1877f2;
       }
@@ -373,13 +391,15 @@ export default {
     font-weight: 500;
     font-size: 16px;
     width: 100%;
-    margin-top: 8px;
     transition: all ease-in-out 0.25s;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
     &:hover, &:focus {
       height: 100%; width: 100%; 
       transform: scaleX(0.98) scaleY(0.98);
       opacity: 0.75;
-      height: 44px;
     }
   }
   .ip {
@@ -452,5 +472,22 @@ export default {
     font-size: 16px;
   }
   
+}
+.loading-spinner {
+  border: 3px solid #f3f3f3; /* Light gray */
+  border-top: 3px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

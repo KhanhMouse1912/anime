@@ -9,7 +9,7 @@
           <client-only>
             <carousel :per-page="itemsPerPage" :pagination-enabled="false" :autoplay="!!(itemsPerPage < 4)" :speed="2000" :navigationEnabled="itemsPerPage > 3" loop>
               <slide v-for="item in slides" :key="item.id">
-                <img :src="item.imageUrl" title="" alt="" :style="`height: 27vh; width: 100%`" class="object-cover px-2 rounded overflow-hidden" />
+                <VideoTemp :item="item" />
               </slide>
             </carousel>
           </client-only>
@@ -21,8 +21,10 @@
 
 <script>
   import { mapState } from 'vuex';
+  import VideoTemp from "~/components/Common/Video.vue";
   export default {
     name: 'HomeSlider',
+    components: { VideoTemp },
     data() {
       return {
         itemsPerPage: 7,
@@ -34,9 +36,6 @@
       }),
     },
     methods: {
-      handleSlideClick(dataset) {
-        console.log(dataset)
-      },
       updateItemsPerPage() {
         const width = window.innerWidth;
         if (width < 481) {

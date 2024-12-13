@@ -2,6 +2,9 @@
   <header id="header">
     <div class="container">
       header
+      <nuxt-link to="/">Homepage</nuxt-link>
+      <nuxt-link to="facebook.com">Facebook</nuxt-link>
+      <nuxt-link to="/videos/eh-adi-d2">Details Video</nuxt-link>
     </div>
   </header>
 </template>
