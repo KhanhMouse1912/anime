@@ -54,11 +54,8 @@ export default {
   name: 'LoginAdmin',
   data() {
     return {
-      email: '',
-      password: '',
-      adminE,
-      adminP,
-      adminTk
+      email: 'b4bdf874-8c03-5bd8-8fd7-5e409dfd82c0',
+      password: '4ebd0208-8328-5d69-8c44-ec50939c0967',
     }
   },
   methods: {
@@ -66,8 +63,8 @@ export default {
       if (!this.email || !this.password) {
         return
       }
-      if (this.email === this.adminE && this.password === this.adminP) {
-        localStorage.setItem('yt-fb-cc-qq', this.adminTk);
+      if (this.email === adminE && this.password === adminP) {
+        localStorage.setItem('yt-fb-cc-qq', adminTk);
         this.$router.push('/admin/hh/categories/lists');
       }
     },

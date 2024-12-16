@@ -13,16 +13,11 @@ import SidebarMenuPrivate from '~/components/SidebarMenuPrivate.vue'
 export default {
   name: 'PrivateLayout',
   components: { SidebarMenuPrivate },
-  data() {
-    return {
-      adminTk,
-    }
-  },
   methods: {
     checkLogged() {
       if (process.client) {
         const token = localStorage?.getItem('yt-fb-cc-qq')
-        if (token && token === this.adminTk) {
+        if (token && token === adminTk) {
           this.$router.push('/admin/hh/categories/lists')
         } else {
           this.$router.push('/admin/hh/login')

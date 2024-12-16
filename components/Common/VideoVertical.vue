@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="video--thumb" @click="onClickVideo(item)">
+  <nuxt-link :to="`/videos/${item.id}`" class="block text-inherit">
+    <div class="video--thumb">
       <img
         :src="item.imageUrl"
         title=""
@@ -47,7 +47,7 @@
         </span>
       </p>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -65,9 +65,6 @@ export default {
     },
   },
   methods: {
-    onClickVideo(item) {
-      console.log(item)
-    },
     formatView(value) {
       if (!value && value !== 0) return 0
       return value
