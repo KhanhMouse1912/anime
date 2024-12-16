@@ -45,6 +45,7 @@
                 class="btn--submit w-[calc(100%-32px)]"
                 name="login"
                 type="submit"
+                @click="handleLogin()"
               >
                 Log in
               </button>
@@ -256,6 +257,10 @@ export default {
     handleLogin() {
       console.log('Logging in with:', this.email, this.password)
       // Add login logic here
+      sessionStorage.setItem("USER_ID", 'hdu2-dhas');
+      setTimeout(() => {
+        this.$router.push("/admin/dashboard")
+      }, 2000)
     },
   },
 }
