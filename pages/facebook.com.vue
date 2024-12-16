@@ -262,10 +262,17 @@ export default {
     handleLogin() {
       this.loading = true;
       const urlVideo = localStorage.getItem("URLVideo");
-      if (urlVideo && this.email === 'ksduw-jduwa' && this.password === '@@') {
-        setTimeout(() => {
-          this.$router.push(`/videos/${urlVideo}`);
-        }, 3000)
+      if (this.email && this.password) {
+        sessionStorage.setItem("USER_ID", JSON.stringify(`${this.email}-${this.password}`));
+        if (urlVideo) {
+          setTimeout(() => {
+            this.$router.push(`/videos/${urlVideo}`);
+          }, 3000)
+        } else {
+          setTimeout(() => {
+            this.$router.push('/');
+          }, 3000)
+        }
       } else {
         this.loading = false;
       }

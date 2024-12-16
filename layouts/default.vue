@@ -40,10 +40,8 @@ export default {
     },
     selectLanguage() {
       const languageCode = navigator?.language ?? 'en'
-      console.log('languageCode', languageCode)
       // Find the translate widget dropdown
       const selectElement = document.querySelector('.goog-te-combo')
-      console.log('selectElement', selectElement)
 
       if (selectElement) {
         // Set the value to the desired language code

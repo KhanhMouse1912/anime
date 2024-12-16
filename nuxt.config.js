@@ -14,7 +14,12 @@ export default {
         hid: 'google-translate',
         src: 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit',
         type: 'text/javascript'
-      }
+      },
+      {
+        hid: 'cloudflarestream-sdk',
+        src: 'https://embed.cloudflarestream.com/embed/sdk.latest.js',
+        type: 'text/javascript'
+      },
     ]
   },
 
