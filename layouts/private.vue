@@ -1,6 +1,5 @@
 <template>
   <div class="flex items-start w-full bg-[#f1f1f173] gap-4">
-    <SidebarMenuPrivate />
     <div class="flex w-full flex-col flex-1">
       <Nuxt />
     </div>
@@ -9,16 +8,15 @@
 
 <script>
 import { adminTk } from '~/utils/globals'
-import SidebarMenuPrivate from '~/components/SidebarMenuPrivate.vue'
 export default {
   name: 'PrivateLayout',
-  components: { SidebarMenuPrivate },
   methods: {
     checkLogged() {
       if (process.client) {
         const token = localStorage?.getItem('yt-fb-cc-qq')
         if (token && token === adminTk) {
-          this.$router.push('/admin/hh/categories/lists')
+          const currentPath = this.$route.path
+          this.$router.push(currentPath ?? '/admin/hh/categories')
         } else {
           this.$router.push('/admin/hh/login')
         }

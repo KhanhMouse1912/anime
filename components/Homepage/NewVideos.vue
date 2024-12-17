@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import SectionBar from '~/components/SectionBar.vue';
 import VideoHorizontal from '~/components/Common/VideoHorizontal.vue';
   export default {
@@ -80,6 +81,11 @@ import VideoHorizontal from '~/components/Common/VideoHorizontal.vue';
         ]
       }
     },
+    computed: {
+      ...mapState({
+        newlyUpdated: (state) => state.newlyUpdated,
+      }),
+    }
   }
 </script>
 

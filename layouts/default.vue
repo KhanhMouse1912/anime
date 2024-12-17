@@ -1,7 +1,9 @@
 <template>
   <div class="layout--default">
     <PublicHeader />
-    <Nuxt :keep-alive-props="{ max: 5 }" />
+    <div class="pb-6 bg-[#202125] min-h-screen">
+      <Nuxt :keep-alive-props="{ max: 5 }" />
+    </div>
     <PublicFooter />
     <SidebarMenuPublic />
     <div class="opacity-0 h-0 w-0">

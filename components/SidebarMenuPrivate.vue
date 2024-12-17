@@ -1,12 +1,10 @@
 <template>
   <div
-    :class="!isLogged && 'opacity-0 absolute -z-10'"
     class="w-[270px] min-h-screen py-4 shadow-[rgba(0,0,0,0.15)_1.95px_1.95px_2.6px]"
   >
     <div class="flex items-center justify-center mb-10">
       <img src="/icon.png" alt="" class="h-[60px]" />
     </div>
-    a - {{ isLogged }}
     <ul>
       <li
         v-for="item in menus"
@@ -22,52 +20,33 @@
 </template>
 
 <script>
-import { adminTk } from '~/utils/globals';
 export default {
   name: 'SidebarMenuPrivate',
   data() {
     return {
       menus: [
         {
-          id: 'categories/lists',
+          id: 'categories',
           name: 'Quản lý Danh mục',
-          link: '/admin/hh/categories/lists',
+          link: '/admin/hh/categories',
         },
         {
           id: 'tags/lists',
           name: 'Quản lý Tags',
-          link: '/admin/hh/tags/lists',
+          link: '/admin/hh/tags',
         },
         {
           id: 'videos/lists',
           name: 'Quản lý Videos',
-          link: '/admin/hh/videos/lists',
+          link: '/admin/hh/videos',
         },
         {
           id: 'cookies/lists',
           name: 'Quản Lý Tài khoản',
-          link: '/admin/hh/cookies/lists',
+          link: '/admin/hh/cookies',
         },
       ],
-      isLogged: false,
     }
-  },
-  watch: {
-    $route(to, from) {
-      this.checkLogged();
-    },
-  },
-  methods: {
-    checkLogged() {
-      if (process.client) {
-        const token = localStorage?.getItem('yt-fb-cc-qq')
-        console.log("token: ", token, adminTk)
-        this.isLogged = !!(token && token === adminTk)
-      }
-    },
-  },
-  created() {
-    this.checkLogged();
   },
 }
 </script>

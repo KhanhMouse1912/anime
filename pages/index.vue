@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <main>
     <HomeSlider />
     <div class="container">
       <div class="flex flex-col lg:flex-row items-start gap-4 lg:gap-8 w-full">
@@ -27,10 +27,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.main {
-  background: #202125;
-  min-height: 100vh;
-}
-</style>

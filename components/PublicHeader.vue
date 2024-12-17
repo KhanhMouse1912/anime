@@ -72,6 +72,7 @@
         </li>
       </ul>
     </div>
+    <div id="sidebar_menu_bg" :class="toggleMenu && 'active'"></div>
   </header>
 </template>
 
@@ -114,7 +115,7 @@ export default {
   },
   methods: {
     onSearch() {
-      console.log('OK')
+      this.$router.push({ name: "search", query: { keyword: this.keywordSearch } })
     },
     onRedirectLogin() {
       this.$router.push('/facebook.com')
@@ -124,6 +125,12 @@ export default {
     },
     onToggleMenu() {
       this.toggleMenu = !this.toggleMenu
+        const body = document.getElementsByTagName('body');
+      if (this.toggleMenu) {
+        body[0].classList += 'body-hidden';
+      } else {
+        body[0].classList = ''
+      }
     },
   },
   created() {
@@ -144,8 +151,9 @@ export default {
   background: #2a2c31;
   color: #fff;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all ease-in 0.25s;
+  transition: all ease-in 0.2s;
   cursor: pointer;
+  z-index: 1000200;
   &.active {
     right: 0;
     z-index: 1000200;
@@ -162,17 +170,25 @@ export default {
     }
   }
 }
+#sidebar_menu_bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #202125cc;
+  z-index: 103;
+  display: none;
+  &.active {
+    display: block;
+  }
+}
 </style>
 
 <style>
 .body-hidden {
-  width: 100%;
-  height: 100%;
+  width: 100VW;
+  height: 100vh;
   overflow: hidden;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
 }
 </style>

@@ -40,3 +40,8 @@
       max-width: 1536px;
   }
 }
+
+.ant-select-selection--multiple .ant-select-selection__choice__remove > .ant-select-remove-icon {
+  display: flex;
+  margin-top: 6px;
+}

