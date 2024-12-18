@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name: "ScrollToTop",
   data() {
     return {
       isVisible: false,
@@ -20,7 +21,7 @@ export default {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     },
     handleScroll() {
-      this.isVisible = window.scrollY > 300
+      this.isVisible = window.scrollY > 150
     },
   },
   mounted() {

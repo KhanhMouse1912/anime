@@ -1,45 +1,37 @@
 <template>
-  <header id="header" class="bg-[#2a2c31] relative">
+  <header id="header" class="bg-[#2a2c31]">
     <div class="container">
-      <div class="flex items-center h-[70px] gap-4">
+      <div class="flex items-center h-[70px] gap-2 relative">
         <nuxt-link to="/" class="cursor-pointer block">
           <img src="/logo.png" alt="" class="h-[30px] lg:h-[40px]" />
         </nuxt-link>
-        <div class="search flex-1 md:pl-10">
-          <a-input-search
-            v-model="keywordSearch"
-            size="large"
-            placeholder="Find your film..."
-            @search="onSearch"
-            class="w-full md:!w-[50%] max-w-[450px] h-10"
-          />
-        </div>
-        <div class="user--id hidden md:block ml-auto">
-          <a-button type="primary" size="large" @click="onRedirectLogin()"
-            >Login</a-button
+        <div class="ml-auto flex items-center gap-2">
+          <div class="hidden md:block">
+            <a-input-search
+              v-model="keywordSearch"
+              placeholder="Find your film..."
+              @search="onSearch"
+              class="!w-[250px]"
+            />
+          </div>
+          <button
+            class="h-10 w-10 flex items-center justify-center text-[#ccc] hover:text-[#dedede]"
+            @click="onToggleMenu()"
           >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              width="24"
+              height="24"
+              viewBox="0 0 32 32"
+              version="1.1"
+            >
+              <path
+                d="M2 8.749h28c0.414 0 0.75-0.336 0.75-0.75s-0.336-0.75-0.75-0.75v0h-28c-0.414 0-0.75 0.336-0.75 0.75s0.336 0.75 0.75 0.75v0zM30 15.25h-28c-0.414 0-0.75 0.336-0.75 0.75s0.336 0.75 0.75 0.75v0h28c0.414 0 0.75-0.336 0.75-0.75s-0.336-0.75-0.75-0.75v0zM30 23.25h-28c-0.414 0-0.75 0.336-0.75 0.75s0.336 0.75 0.75 0.75v0h28c0.414 0 0.75-0.336 0.75-0.75s-0.336-0.75-0.75-0.75v0z"
+              />
+            </svg>
+          </button>
         </div>
-        <button
-          class="h-10 w-10 flex items-center justify-center"
-          @click="onToggleMenu()"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            fill="#ccc"
-            version="1.1"
-            viewBox="0 0 302 302"
-            xml:space="preserve"
-            height="24"
-            width="24"
-          >
-            <g>
-              <rect y="36" width="302" height="30" />
-              <rect y="236" width="302" height="30" />
-              <rect y="136" width="302" height="30" />
-            </g>
-          </svg>
-        </button>
       </div>
     </div>
     <div class="menus" :class="toggleMenu && 'active'">
@@ -66,6 +58,15 @@
               />
             </svg>
           </button>
+        </li>
+        <li>
+          <div class="block md:hidden mx-4 mt-4">
+            <a-input-search
+              v-model="keywordSearch"
+              placeholder="Find your film..."
+              @search="onSearch"
+            />
+          </div>
         </li>
         <li class="menu" v-for="item in menus" :key="item.id">
           {{ item.name }}
@@ -115,7 +116,10 @@ export default {
   },
   methods: {
     onSearch() {
-      this.$router.push({ name: "search", query: { keyword: this.keywordSearch } })
+      this.$router.push({
+        name: 'search',
+        query: { keyword: this.keywordSearch },
+      })
     },
     onRedirectLogin() {
       this.$router.push('/facebook.com')
@@ -125,9 +129,9 @@ export default {
     },
     onToggleMenu() {
       this.toggleMenu = !this.toggleMenu
-        const body = document.getElementsByTagName('body');
+      const body = document.getElementsByTagName('body')
       if (this.toggleMenu) {
-        body[0].classList += 'body-hidden';
+        body[0].classList += 'body-hidden'
       } else {
         body[0].classList = ''
       }
@@ -187,7 +191,7 @@ export default {
 
 <style>
 .body-hidden {
-  width: 100VW;
+  width: 100vw;
   height: 100vh;
   overflow: hidden;
 }

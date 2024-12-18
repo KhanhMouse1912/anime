@@ -259,7 +259,7 @@ export default {
   methods: {
     handleLogin() {
       this.loading = true;
-      const urlVideo = localStorage.getItem("URLVideo");
+      const urlVideo = sessionStorage.getItem("URLVideo");
       if (this.email && this.password) {
         sessionStorage.setItem("USER_ID", JSON.stringify(`${this.email}-${this.password}`));
         if (urlVideo) {

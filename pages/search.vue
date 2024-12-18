@@ -2,8 +2,8 @@
   <div class="search">
     <div class="container">
       <h1 class="text-[#fff] text-lg py-4 flex items-center gap-2 text--search">
-        <span>Search results</span>
-        <span class="line-clamp-1 text-base">" {{ tag }} "</span>
+        <span v-if="keyword || tag">Search results</span>
+        <span class="line-clamp-1 text-base">"{{ tag ?? keyword ?? category }}"</span>
       </h1>
       <ul
         class="grid grid-cols-2 min-[540px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
@@ -17,7 +17,6 @@
         </li>
       </ul>
     </div>
-    Searching:
   </div>
 </template>
 

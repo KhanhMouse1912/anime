@@ -9,6 +9,7 @@
     <div class="opacity-0 h-0 w-0">
       <div id="google_translate_element"></div>
     </div>
+    <ScrollToTop />
   </div>
 </template>
 
@@ -16,12 +17,14 @@
 import PublicHeader from '~/components/PublicHeader.vue'
 import PublicFooter from '~/components/PublicFooter.vue'
 import SidebarMenuPublic from '~/components/SidebarMenuPublic.vue'
+import ScrollToTop from '~/components/ScrollToTop.vue'
 export default {
   name: 'DefaultLayout',
   components: {
     PublicHeader,
     PublicFooter,
     SidebarMenuPublic,
+    ScrollToTop,
   },
   mounted() {
     this.loadGoogleTranslate()

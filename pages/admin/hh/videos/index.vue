@@ -41,6 +41,7 @@
           :page-size="20"
           :total="pagination.total"
           show-less-items
+          @change="onChangePagination"
         />
       </div>
     </div>
@@ -107,7 +108,7 @@ export default {
       },
       pagination: {
         page: 1,
-        total: 100,
+        total: 1000,
       },
       columns: [
         {
@@ -199,6 +200,9 @@ export default {
     }),
   },
   methods: {
+    onChangePagination(e) {
+      console.log('e: ', e)
+    },
     onShowEdit(record) {
       this.formState = {
         id: record.id,

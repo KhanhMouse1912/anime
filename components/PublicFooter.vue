@@ -2,7 +2,7 @@
   <div class="bg-[#2a2c31]">
     <div class="container">
       <div class="py-4 text-[#fff]">
-        @Made by...
+        © Copy right 2024. All rights reserved.
       </div>
     </div>
   </div>
