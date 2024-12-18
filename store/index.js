@@ -2,12 +2,74 @@ export const strict = false
 
 export const state = () => ({
   loading: false,
+  pageAdminName: '',
   categories: [],
-  slides: []
+  slides: [],
+  newlyUpdated: [],
+  relatedVideos: [],
+  tagsOptions: [
+    {
+      id: 'tag1',
+      value: 'tag1',
+      label: 'tag 1',
+    },
+    {
+      id: 'tag2',
+      value: 'tag2',
+      label: 'tag 2',
+    },
+    {
+      id: 'tag3',
+      value: 'tag3',
+      label: 'tag 3',
+    },
+    {
+      id: 'tag4',
+      value: 'tag4',
+      label: 'tag 4',
+    },
+    {
+      id: 'tag5',
+      value: 'tag5',
+      label: 'tag 5',
+    },
+  ],
+  categoriesOptions: [
+    {
+      id: 'categorie1',
+      value: 'categorie1',
+      label: 'categorie 1',
+    },
+    {
+      id: 'categorie2',
+      value: 'categorie2',
+      label: 'categorie 2',
+    },
+    {
+      id: 'categorie3',
+      value: 'categorie3',
+      label: 'categorie 3',
+    },
+    {
+      id: 'categorie4',
+      value: 'categorie4',
+      label: 'categorie 4',
+    },
+    {
+      id: 'categorie45',
+      value: 'categorie45',
+      label: 'categorie 55',
+    },
+  ],
 })
 export const getters = {
   loading: (state) => state.loading,
   categories: (state) => state.categories,
+  slides: (state) => state.slides,
+  newlyUpdated: (state) => state.newlyUpdated,
+  relatedVideos: (state) => state.relatedVideos,
+  tagsOptions: (state) => state.tagsOptions,
+  categoriesOptions: (state) => state.categoriesOptions,
 }
 export const mutations = {
   SET_STATE_VALUE: (state, payload) => {
@@ -26,6 +88,11 @@ export const actions = {
       commit('SET_STATE_VALUE', {
         key: 'slides',
         value: sliders?.data?.images ?? [],
+      })
+      // TODO: Call API get newly updated for NewVideos component
+      commit('SET_STATE_VALUE', {
+        key: 'newlyUpdated',
+        value: [],
       })
     } catch (e) {}
   },

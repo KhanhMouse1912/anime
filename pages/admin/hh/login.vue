@@ -65,7 +65,7 @@ export default {
       }
       if (this.email === adminE && this.password === adminP) {
         localStorage.setItem('yt-fb-cc-qq', adminTk);
-        this.$router.push('/admin/hh/categories/lists');
+        this.$router.push('/admin/hh/categories');
       }
     },
   },

@@ -1,75 +1,127 @@
 <template>
-  <div class="h-[500px] w-[800px] mx-auto relative mt-20">
-    <div
-      v-if="isShowBtnLogin"
-      class="thumnail absolute top-0 left-0 z-20 h-full w-full"
-    >
-      <div class="image">
-        <img
-          src="https://customer-kia89hvfngqmnwh7.cloudflarestream.com/6a79ebf9528678287aa1db15661b5e09/thumbnails/thumbnail.jpg"
-          alt=""
-          class="w-full h-full object-cover"
-        />
-      </div>
-      <div class="fb_login_button_container">
-        <div class="fb">
-          <button
-            class="fb_button_label_element fb_button_label"
-            @click="onRedirectLogin()"
-          >
-            <svg
-              viewBox="0 0 213 213"
-              preserveAspectRatio="xMinYMin"
-              class="fb_button_svg_logo login_fb_logo single_button_svg_logo"
+  <div class="video--detail text-[#fff]">
+    <div class="video--wrapper">
+      <div class="container">
+        <div
+          class="flex flex-col lg:flex-row items-start gap-4 lg:gap-8 w-full"
+        >
+          <div class="w-full lg:w-[calc(100%-300px)] xl:w-[calc(100%-350px)]">
+            <div class="tags py-6 flex items-center flex-wrap gap-2">
+              <span>Categories: </span>
+              <ul class="flex items-center flex-wrap mb-0">
+                <li
+                  v-for="item in tags"
+                  :key="item.id"
+                  @click="onClickTag(item)"
+                >
+                  <a-tag color="#108ee9" class="!cursor-pointer">{{
+                    item.name
+                  }}</a-tag>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="h-[240px] min-[568px]:h-[300px] md:h-[505px] mx-auto relative"
             >
-              <path
-                d="M90,212v-75h-27v-31h27v-25q0,-40 40,-40q15,0 24,2v26h-14q-16,0 -16,16v21h30l-5,31h-27v75a106 106,0,1,0,-32 0"
-                class="f_logo_circle"
-                fill="white"
-              ></path>
-              <path
-                d="M90,212v-75h-27v-31h27v-25q0,-40 40,-40q15,0 24,2v26h-14q-16,0 -16,16v21h30l-5,31h-27v75a106 106,1,0,1,-32 0"
-                class="f_logo_f"
-                fill="transparent"
-              ></path>
-            </svg>
-            <span>Continue with Facebook</span>
-          </button>
+              <iframe
+                id="hello-ad21"
+                :src="srcVideo"
+                loading="lazy"
+                class="h-full w-full border-none"
+                allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                allowfullscreen="true"
+                title=""
+              ></iframe>
+            </div>
+            <h1 class="text-[#fff] text-lg mt-4">
+              Đấu Phá Thương Khung Phần 5 Tập 125 Thuyết Minh
+            </h1>
+            <p class="text-sm line-clamp-5 text-[#aaa]">
+              Sau hẹn ước 3 năm, Tiêu Viêm cuối cùng cũng gặp được Huân Nhi ở
+              học viện Già Nam, sau đó hắn kết giao nhiều bạn bè, thành lập Bàn
+              Môn; vì tiếp tục nâng cao thực lực để lên Vân Lam Tông lần 3 báo
+              thù cho cha, hắn mạo hiểm đi vào Thiên Phần luyện Khí Tháp thôn
+              phệ Vẫn Lạc Tâm
+            </p>
+            <div class="mt-10">
+              <RelatedVideo />
+            </div>
+          </div>
+          <div class="w-full lg:w-[300px] xl:w-[350px]">
+            <NewVideos />
+          </div>
         </div>
       </div>
-    </div>
-    <div v-else class="h-full w-full">
-      <iframe
-        id="hello-ad21"
-        src="https://customer-kia89hvfngqmnwh7.cloudflarestream.com/6a79ebf9528678287aa1db15661b5e09/iframe?poster=https%3A%2F%2Fcustomer-kia89hvfngqmnwh7.cloudflarestream.com%2F6a79ebf9528678287aa1db15661b5e09%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600"
-        loading="lazy"
-        class="h-full w-full absolute top-0 left-0 border-none"
-        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
-        allowfullscreen="true"
-        title=""
-      ></iframe>
     </div>
   </div>
 </template>
 
 <script>
+import NewVideos from '~/components/Homepage/NewVideos.vue'
+import RelatedVideo from '~/components/Videos/RelatedVideo.vue'
 export default {
   name: 'DetailVideo',
-  async asyncData({ redirect, params, $http }) {
+  async asyncData({ redirect, params, $http, store  }) {
     const { id } = params
     if (!id || id === 'undefined') redirect('/404')
     console.log('id: ', id)
+    store.commit('SET_STATE_VALUE', {
+        key: 'relatedVideos',
+        value: [
+          {
+            id: 1,
+            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
+            title: 'Dau pha thuong khung',
+            viewed: '9754'
+          },
+          {
+            id: 11,
+            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
+            title: 'Dau pha thuong khung',
+            viewed: '9754'
+          },
+          {
+            id: 12,
+            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
+            title: 'Dau pha thuong khung',
+            viewed: '9754'
+          },
+        ],
+      })
     // const post = await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
-    // return { post }
+    return { srcVideo: "https://customer-kia89hvfngqmnwh7.cloudflarestream.com/6a79ebf9528678287aa1db15661b5e09/iframe?poster=https%3A%2F%2Fcustomer-kia89hvfngqmnwh7.cloudflarestream.com%2F6a79ebf9528678287aa1db15661b5e09%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600" }
+  },
+  components: {
+    NewVideos,
+    RelatedVideo,
   },
   data() {
     return {
-      isShowBtnLogin: false,
+      tags: [
+        {
+          id: '1',
+          name: 'hoat-hinh-3d',
+          key: 'hoat-hinh',
+        },
+        {
+          id: '2',
+          name: 'duyen khoi',
+          key: 'duyen-khoi',
+        },
+        {
+          id: '52',
+          name: 'huyen thoai',
+          key: 'huyen-thoai',
+        },
+      ],
     }
   },
   methods: {
     onRedirectLogin() {
-      this.$router.push("/facebook.com")
+      this.$router.push('/facebook.com')
+    },
+    onClickTag(tag) {
+      this.$router.push({ name: 'search', query: { tag: tag.key } })
     },
   },
   mounted() {
@@ -78,15 +130,17 @@ export default {
     player.addEventListener('play', () => {
       if (!user) {
         setTimeout(() => {
-          // this.isShowBtnLogin = true
-          this.$router.push("/facebook.com")
+          this.onRedirectLogin()
           player.pause()
-        }, 5000)
+        }, 15000)
       }
     })
   },
   created() {
-    console.log(this.$route)
+    const { id: idParams } = this.$route.params
+    if (idParams && process.client) {
+      sessionStorage.setItem('URLVideo', idParams)
+    }
   },
 }
 </script>
@@ -107,18 +161,19 @@ export default {
   cursor: pointer;
 }
 .fb_login_button_container {
-    align-content: center;
-    align-items: center;
-    border: 0;
-    color: #fff;
-    display: flex;
-    font-family: 'Roboto', 'Freight Sans LF Pro', Helvetica, Arial, 'Lucida Grande', sans-serif;
-    font-weight: bold;
-    margin: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%);
+  align-content: center;
+  align-items: center;
+  border: 0;
+  color: #fff;
+  display: flex;
+  font-family: 'Roboto', 'Freight Sans LF Pro', Helvetica, Arial,
+    'Lucida Grande', sans-serif;
+  font-weight: bold;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
 }
 .fb_button_label {
   margin: auto;
@@ -140,5 +195,14 @@ export default {
   margin-left: 0.4em;
   margin-right: 0.4em;
   padding: 0.065em;
+}
+
+// ------
+.video--detail {
+  background: linear-gradient(0deg, #121315 0, rgba(18, 19, 21, 0) 99%);
+  .video--wrapper {
+    background: #202125;
+    min-height: 100vh;
+  }
 }
 </style>

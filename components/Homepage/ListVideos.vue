@@ -104,11 +104,6 @@ import VideoVertical from '../Common/VideoVertical.vue';
         ]
       }
     },
-    methods: {
-      onSelectVideo() {
-        localStorage.setItem("URLVideo", 'jduasi-ujduyw')
-      },
-    }
   }
 </script>
 

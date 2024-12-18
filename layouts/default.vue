@@ -1,12 +1,15 @@
 <template>
   <div class="layout--default">
     <PublicHeader />
-    <Nuxt :keep-alive-props="{ max: 5 }" />
+    <div class="pb-6 bg-[#202125] min-h-screen">
+      <Nuxt :keep-alive-props="{ max: 5 }" />
+    </div>
     <PublicFooter />
     <SidebarMenuPublic />
     <div class="opacity-0 h-0 w-0">
       <div id="google_translate_element"></div>
     </div>
+    <ScrollToTop />
   </div>
 </template>
 
@@ -14,12 +17,14 @@
 import PublicHeader from '~/components/PublicHeader.vue'
 import PublicFooter from '~/components/PublicFooter.vue'
 import SidebarMenuPublic from '~/components/SidebarMenuPublic.vue'
+import ScrollToTop from '~/components/ScrollToTop.vue'
 export default {
   name: 'DefaultLayout',
   components: {
     PublicHeader,
     PublicFooter,
     SidebarMenuPublic,
+    ScrollToTop,
   },
   mounted() {
     this.loadGoogleTranslate()
