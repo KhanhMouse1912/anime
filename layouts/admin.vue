@@ -25,13 +25,17 @@ export default {
     ...mapState({
       pageAdminName: (state) => state.pageAdminName,
     }),
+    ...mapState("admin", {
+      categories: (state) => state.categories,
+      products: (state) => state.products,
+    }),
   },
   methods: {
     checkLogged() {
       if (process.client) {
         const token = localStorage?.getItem('yt-fb-cc-qq')
         if (token && token === adminTk) {
-          const currentPath = this.$route.path
+          const currentPath = this.$route.path;
           this.$router.push(currentPath ?? '/admin/hh/categories')
         } else {
           this.$router.push('/admin/hh/login')
@@ -42,9 +46,13 @@ export default {
       localStorage.removeItem('yt-fb-cc-qq')
       this.$router.push('/admin/hh/login')
     },
+    initData() {
+      if(!this.categories?.list?.legth) this.$store.dispatch("admin/getCategories")
+    }
   },
   created() {
     this.checkLogged()
+    this.initData()
   },
 }
 </script>

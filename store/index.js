@@ -3,6 +3,14 @@ export const strict = false
 export const state = () => ({
   loading: false,
   pageAdminName: '',
+  products: {
+    list: [],
+    pagination: {
+      next_page_url: null,
+      prev_page_url: null,
+      total: 0
+    }
+  },
   categories: [],
   slides: [],
   newlyUpdated: [],
@@ -79,21 +87,55 @@ export const mutations = {
 export const actions = {
   async nuxtServerInit({ commit }, { $axios }) {
     try {
-      const res = await $axios.get('https://google.serper.dev/news?q=apple+inc&apiKey=e6dc8d729d2068059e937f703de8709768c9bcb1');
+      const [categories, slidersData, lastUpdated, productsData] = await Promise.all([
+        $axios.get('categories'),
+        $axios.get('products/trends'),
+        $axios.get('products/last-update'),
+        $axios.get('products/list'),
+      ]);
       commit('SET_STATE_VALUE', {
         key: 'categories',
-        value: res?.data?.news ?? [],
+        value: categories?.data?.categories?.data ?? [],
       })
-      const sliders = await $axios.get('https://google.serper.dev/images?q=apple+inc&num=20&apiKey=e6dc8d729d2068059e937f703de8709768c9bcb1');
       commit('SET_STATE_VALUE', {
         key: 'slides',
-        value: sliders?.data?.images ?? [],
+        value: slidersData?.data?.products ?? [],
       })
-      // TODO: Call API get newly updated for NewVideos component
       commit('SET_STATE_VALUE', {
         key: 'newlyUpdated',
-        value: [],
+        value: lastUpdated?.data?.products ?? [],
+      })
+      commit('SET_STATE_VALUE', {
+        key: 'products',
+        value: {
+          list: productsData?.data?.products?.data ?? [],
+          pagination: {
+            next_page_url: productsData?.data?.products.next_page_url,
+            prev_page_url: productsData?.data?.products.prev_page_url,
+            total: productsData?.data?.products.total
+          }
+        },
       })
     } catch (e) {}
   },
+  async getViewMore({ commit, state }, payload) {
+    try {
+      const productsData = await this.$axios.get(payload);
+      commit('SET_STATE_VALUE', {
+        key: 'products',
+        value: {
+          list: [
+            ...state.products.list,
+            ...productsData?.data?.products?.data ?? []
+          ],
+          pagination: {
+            next_page_url: productsData?.data?.products.next_page_url,
+            prev_page_url: productsData?.data?.products.prev_page_url,
+            total: productsData?.data?.products.total
+          }
+        },
+      })
+    } catch (error) {
+    }
+  }
 }
