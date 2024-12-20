@@ -2,7 +2,7 @@
   <div class="flex items-start gap-8">
     <div class="flex-1">
       <div class="max-h-[700px] overflow-auto">
-        <a-table :columns="columns" :data-source="data" :pagination="false">
+        <a-table :columns="columns" :data-source="videos" :pagination="false">
           <span slot="name" slot-scope="text">{{ text }}</span>
           <span slot="tags" slot-scope="tags" class="flex gap-2 flex-wrap">
             <a-tag v-for="item in tags" :key="item" class="!mr-0">
@@ -75,7 +75,7 @@
         </a-form-item>
         <a-form-item label="Key Code" class="!mb-0">
           <a-input
-            v-model="formState.keyCode"
+            v-model="formState.slug"
             placeholder="Key code"
             disabled
           />
@@ -101,10 +101,9 @@ export default {
     return {
       formState: {
         name: '',
-        keyCode: '',
+        slug: '',
         link: '',
         categories: [],
-        tags: [],
       },
       pagination: {
         page: 1,
@@ -117,11 +116,11 @@ export default {
           key: 'name',
         },
         {
-          title: 'Hashtag',
-          dataIndex: 'tags',
-          key: 'tags',
+          title: 'Hình ảnh',
+          dataIndex: 'image',
+          key: 'image',
           width: '220px',
-          scopedSlots: { customRender: 'tags' },
+          scopedSlots: { customRender: 'image' },
         },
         {
           title: 'Danh mục',
@@ -137,55 +136,6 @@ export default {
           width: '120px',
         },
       ],
-      data: [
-        {
-          key: '1',
-          id: '1',
-          name: 'John Brown',
-          tags: [
-            {
-              id: 'tag1',
-              value: 'tag1',
-              name: 'tag 1',
-            },
-            {
-              id: 'tag2',
-              value: 'tag2',
-              name: 'tag 2',
-            },
-          ],
-          categories: [
-            {
-              id: 'categorie1',
-              value: 'categorie1',
-              name: 'categorie 1',
-            },
-            {
-              id: 'categorie2',
-              value: 'categorie2',
-              name: 'categorie 2',
-            },
-            {
-              id: 'categorie45',
-              value: 'categorie45',
-              name: 'categorie 55',
-            },
-          ],
-          keyCode: 'John-Brown',
-        },
-        {
-          key: '2',
-          id: '2',
-          name: 'Jim Green',
-          keyCode: 'Jim-Green',
-        },
-        {
-          key: '3',
-          id: '3',
-          name: 'Joe Black',
-          keyCode: 'Jo-Black',
-        },
-      ],
     }
   },
   watch: {
@@ -198,16 +148,33 @@ export default {
       categoriesOptions: (state) => state.categoriesOptions,
       tagsOptions: (state) => state.tagsOptions,
     }),
+    ...mapState("admin", {
+      products: (state) => state.products,
+      categories: (state) => state.categories,
+    }),
+    videos() {
+      return this.products?.list?.map((video) => {
+        return {
+          id: video?.description?.meta_title ?? undefined,
+          thumbnail: video.image,
+          viewed: video.viewed,
+          name: video?.description?.name ?? '',
+        }
+      })
+    },
   },
   methods: {
     onChangePagination(e) {
       console.log('e: ', e)
     },
+    getProducts(url) {
+      this.$store.dispatch(url ?? "admin/getProducts");
+    },
     onShowEdit(record) {
       this.formState = {
         id: record.id,
         name: record.name,
-        keyCode: record.keyCode,
+        slug: record.slug,
         categories: (record?.categories ?? []).map((item) => item.id),
         tags: (record?.tags ?? []).map((item) => item.id),
       }
@@ -225,7 +192,7 @@ export default {
       if (!this.formState.name || !this.formState.link) return
       this.formState = {
         ...this.formState,
-        keyCode: this.formState.name.split(' ').slice(0, 5).join('-'),
+        slug: this.formState.name.split(' ').slice(0, 5).join('-'),
       }
       console.log('this.formState: ', this.formState)
       // TODO: create
@@ -235,7 +202,7 @@ export default {
       if (!this.formState.id) return
       this.formState = {
         ...this.formState,
-        keyCode: this.formState.name.split(' ').slice(0, 5).join('-'),
+        slug: this.formState.name.split(' ').slice(0, 5).join('-'),
       }
       // TODO: update
       this.onReset()
@@ -246,6 +213,7 @@ export default {
     },
   },
   created() {
+    if (!this.products.length) this.getProducts();
     this.$store.commit('SET_STATE_VALUE', {
       key: 'pageAdminName',
       value: "Danh sách Videos",

@@ -68,8 +68,8 @@
             />
           </div>
         </li>
-        <li class="menu" v-for="item in menus" :key="item.id">
-          {{ item.name }}
+        <li class="menu" v-for="item in categories" :key="item.category_id" @click="onClickedMenu(item)">
+          {{ item?.description?.name ?? '' }}
         </li>
       </ul>
     </div>
@@ -85,28 +85,6 @@ export default {
     return {
       keywordSearch: '',
       toggleMenu: false,
-      menus: [
-        {
-          id: '1gag1',
-          name: 'Homepage',
-          key: 'home',
-        },
-        {
-          id: '11',
-          name: 'Truyen tranh',
-          key: 'truyen-tranh',
-        },
-        {
-          id: '1341',
-          name: 'Truyen Trung Quoc',
-          key: 'truyen-tq',
-        },
-        {
-          id: '111',
-          name: 'Hoat hinh 3D',
-          key: 'hh-3d',
-        },
-      ],
     }
   },
   computed: {
@@ -124,8 +102,11 @@ export default {
     onRedirectLogin() {
       this.$router.push('/facebook.com')
     },
-    getCategories() {
-      // TODO: get menu
+    onClickedMenu(item) {
+      this.$router.push({
+        name: 'search',
+        query: { category: item.category_id },
+      })
     },
     onToggleMenu() {
       this.toggleMenu = !this.toggleMenu
@@ -136,9 +117,6 @@ export default {
         body[0].classList = ''
       }
     },
-  },
-  created() {
-    this.getCategories()
   },
 }
 </script>

@@ -1,12 +1,13 @@
 <template>
-  <nuxt-link :to="`/videos/${item.id}`" class="block text-inherit">
+  <nuxt-link :to="`/videos/${item.id}`" class="flex h-full flex-col text-inherit">
     <div class="video--thumb">
       <img
-        :src="item.imageUrl"
+        :src="item.thumbnail"
         title=""
         alt=""
         :style="`height: 27vh; width: 100%`"
         class="object-cover rounded-t overflow-hidden"
+        @error="setDefaultImage($event)"
       />
       <span class="view text-[10px] absolute flex items-center top-1 left-1 text-[#dedede] gap-1">
         <svg
@@ -40,10 +41,10 @@
         {{ formatView(item.viewed ?? '123456') }}
       </span>
     </div>
-    <div class="bg-[#2a2c31] rounded-b">
+    <div class="bg-[#2a2c31] rounded-b grow">
       <p class="video--title overflow-hidden text-[#aaa] text-sm text-center p-2 mb-0">
         <span class="mx-2 line-clamp-2 capitalize">
-          {{ item.title ?? '' }}
+          {{ item.name ?? '' }}
         </span>
       </p>
     </div>
@@ -58,11 +59,16 @@ export default {
       type: Object,
       default: {
         id: '',
-        imageUrl: '',
-        title: '',
+        thumbnail: '',
+        name: '',
         viewed: '',
       },
     },
+  },
+  data() {
+    return {
+      defaultImageError: "/default.webp"
+    }
   },
   methods: {
     formatView(value) {
@@ -71,6 +77,9 @@ export default {
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         .replace('.00', '')
+    },
+    setDefaultImage(event) {
+      event.target.src = this.defaultImageError;
     },
   },
 }

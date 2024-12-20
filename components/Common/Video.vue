@@ -2,15 +2,16 @@
   <nuxt-link :to="`/videos/${item.id}`" class="block text-inherit">
     <div class="video--thumb px-2">
       <img
-        :src="item.imageUrl"
+        :src="item.thumbnail"
         title=""
         alt=""
         :style="`height: 27vh; width: 100%`"
         class="object-cover rounded overflow-hidden"
+        @error="setDefaultImage($event)"
       />
       <span class="video--title overflow-hidden">
         <span class="mx-2 line-clamp-2 capitalize">
-          {{ item.title ?? '' }}
+          {{ item.name ?? '' }}
         </span>
       </span>
       <span class="view absolute flex items-center top-1 left-3 text-[10px] text-[#dedede] gap-0.5">
@@ -42,7 +43,7 @@
             </clipPath>
           </defs>
         </svg>
-        {{ formatView(item.viewed ?? '123456') }}
+        {{ formatView(item.viewed) }}
       </span>
     </div>
   </nuxt-link>
@@ -56,11 +57,16 @@ export default {
       type: Object,
       default: {
         id: '',
-        imageUrl: '',
-        title: '',
+        thumbnail: '',
+        name: '',
         viewed: '',
       },
     },
+  },
+  data() {
+    return {
+      defaultImageError: "/default.webp"
+    }
   },
   methods: {
     formatView(value) {
@@ -69,6 +75,9 @@ export default {
         .toString()
         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         .replace('.00', '')
+    },
+    setDefaultImage(event) {
+      event.target.src = this.defaultImageError;
     },
   },
 }

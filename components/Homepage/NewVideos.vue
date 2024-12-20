@@ -3,8 +3,8 @@
     <SectionBar name="Newly updated" />
     <div class="bg-[#2a2c31] px-4">
       <ul class="flex flex-col newly">
-        <li v-for="(item, i) in videos" :key="item.id" class="overflow-hidden">
-          <VideoHorizontal :item="{...item, i: i + 1}" />
+        <li v-for="item in videos" :key="item.id" class="overflow-hidden">
+          <VideoHorizontal :item="item" />
         </li>
       </ul>
     </div>
@@ -21,70 +21,21 @@ import VideoHorizontal from '~/components/Common/VideoHorizontal.vue';
       SectionBar,
       VideoHorizontal
     },
-    data() {
-      return {
-        videos: [
-          {
-            id: 1,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 11,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 12,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 14,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 15,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 121,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 2131,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 141,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 1412,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-        ]
-      }
-    },
     computed: {
       ...mapState({
         newlyUpdated: (state) => state.newlyUpdated,
       }),
+      videos() {
+        return this.newlyUpdated.map((video, i) => {
+          return {
+            id: video?.description?.meta_title ?? undefined,
+            thumbnail: video.image,
+            viewed: video.viewed,
+            name: video?.description?.name ?? "",
+            i: i + 1
+          }
+        })
+      }
     }
   }
 </script>

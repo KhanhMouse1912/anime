@@ -2,9 +2,10 @@
   <button
     v-if="isVisible"
     @click="scrollToTop"
-    class="fixed bottom-10 right-10 p-3 bg-blue-500 text-white rounded-full shadow-lg"
+    class="fixed"
   >
-    ↑
+    <!-- ↑ -->
+    <a-back-top />
   </button>
 </template>
 

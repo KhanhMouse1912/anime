@@ -10,13 +10,13 @@
               <span>Categories: </span>
               <ul class="flex items-center flex-wrap mb-0">
                 <li
-                  v-for="item in tags"
+                  v-for="item in product?.categories"
                   :key="item.id"
                   @click="onClickTag(item)"
                 >
-                  <a-tag color="#108ee9" class="!cursor-pointer">{{
-                    item.name
-                  }}</a-tag>
+                  <a-tag color="#108ee9" class="!cursor-pointer">
+                    {{ item?.category?.description?.name ?? '' }}
+                  </a-tag>
                 </li>
               </ul>
             </div>
@@ -24,8 +24,8 @@
               class="h-[240px] min-[568px]:h-[300px] md:h-[505px] mx-auto relative"
             >
               <iframe
-                id="hello-ad21"
-                :src="srcVideo"
+                id="playerCustomId"
+                :src="product?.url_trainner ?? defaultUrl"
                 loading="lazy"
                 class="h-full w-full border-none"
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
@@ -34,14 +34,10 @@
               ></iframe>
             </div>
             <h1 class="text-[#fff] text-lg mt-4">
-              Đấu Phá Thương Khung Phần 5 Tập 125 Thuyết Minh
+              {{ product?.description?.name ?? '' }}
             </h1>
-            <p class="text-sm line-clamp-5 text-[#aaa]">
-              Sau hẹn ước 3 năm, Tiêu Viêm cuối cùng cũng gặp được Huân Nhi ở
-              học viện Già Nam, sau đó hắn kết giao nhiều bạn bè, thành lập Bàn
-              Môn; vì tiếp tục nâng cao thực lực để lên Vân Lam Tông lần 3 báo
-              thù cho cha, hắn mạo hiểm đi vào Thiên Phần luyện Khí Tháp thôn
-              phệ Vẫn Lạc Tâm
+            <p class="text-sm line-clamp-[10] text-[#aaa]">
+              {{ product?.description?.description ?? '' }}
             </p>
             <div class="mt-10">
               <RelatedVideo />
@@ -61,35 +57,51 @@ import NewVideos from '~/components/Homepage/NewVideos.vue'
 import RelatedVideo from '~/components/Videos/RelatedVideo.vue'
 export default {
   name: 'DetailVideo',
-  async asyncData({ redirect, params, $http, store  }) {
+  async asyncData({ redirect, params, $axios, store }) {
     const { id } = params
     if (!id || id === 'undefined') redirect('/404')
-    console.log('id: ', id)
     store.commit('SET_STATE_VALUE', {
-        key: 'relatedVideos',
-        value: [
-          {
-            id: 1,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 11,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 12,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-        ],
-      })
-    // const post = await $http.$get(`https://api.nuxtjs.dev/posts/${params.id}`)
-    return { srcVideo: "https://customer-kia89hvfngqmnwh7.cloudflarestream.com/6a79ebf9528678287aa1db15661b5e09/iframe?poster=https%3A%2F%2Fcustomer-kia89hvfngqmnwh7.cloudflarestream.com%2F6a79ebf9528678287aa1db15661b5e09%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600" }
+      key: 'relatedVideos',
+      value: [
+        {
+          id: 1,
+          imageUrl:
+            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
+          title: 'Dau pha thuong khung',
+          viewed: '9754',
+        },
+        {
+          id: 11,
+          imageUrl:
+            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
+          title: 'Dau pha thuong khung',
+          viewed: '9754',
+        },
+        {
+          id: 12,
+          imageUrl:
+            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
+          title: 'Dau pha thuong khung',
+          viewed: '9754',
+        },
+      ],
+    })
+    const product = await $axios.$get(`products/${id}`);
+    return {
+      product: product?.product ?? {},
+    }
+  },
+  head() {
+    return {
+      title: this.product?.description?.name ?? '',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: this.product?.description?.description ?? '',
+        },
+      ],
+    }
   },
   components: {
     NewVideos,
@@ -97,23 +109,8 @@ export default {
   },
   data() {
     return {
-      tags: [
-        {
-          id: '1',
-          name: 'hoat-hinh-3d',
-          key: 'hoat-hinh',
-        },
-        {
-          id: '2',
-          name: 'duyen khoi',
-          key: 'duyen-khoi',
-        },
-        {
-          id: '52',
-          name: 'huyen thoai',
-          key: 'huyen-thoai',
-        },
-      ],
+      defaultUrl:
+        'https://customer-kia89hvfngqmnwh7.cloudflarestream.com/6a79ebf9528678287aa1db15661b5e09/iframe?poster=https%3A%2F%2Fcustomer-kia89hvfngqmnwh7.cloudflarestream.com%2F6a79ebf9528678287aa1db15661b5e09%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600',
     }
   },
   methods: {
@@ -121,11 +118,12 @@ export default {
       this.$router.push('/facebook.com')
     },
     onClickTag(tag) {
-      this.$router.push({ name: 'search', query: { tag: tag.key } })
+      if (!tag?.category?.description?.meta_title) return;
+      this.$router.push({ name: 'search', query: { tag: tag?.category?.description?.meta_title } })
     },
   },
   mounted() {
-    const player = Stream(document.getElementById('hello-ad21'))
+    const player = Stream(document.getElementById('playerCustomId'))
     const user = sessionStorage.getItem('USER_ID')
     player.addEventListener('play', () => {
       if (!user) {

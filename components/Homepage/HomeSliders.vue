@@ -2,13 +2,13 @@
   <div class="slider">
     <div class="slider--wrapper py-4 md:py-6 lg:py-10">
       <div class="container">
-        <div v-if="!slides.length" :style="`height: 27vh;`" class="text-center">
+        <div v-if="!videos.length" :style="`height: 27vh;`" class="text-center">
           Đang cập nhật...
         </div>
         <div v-else>
           <client-only>
             <carousel :per-page="itemsPerPage" :pagination-enabled="false" :autoplay="!!(itemsPerPage < 4)" :speed="2000" :navigationEnabled="itemsPerPage > 3" loop>
-              <slide v-for="item in slides" :key="item.id">
+              <slide v-for="item in videos" :key="item.id">
                 <VideoTemp :item="item" />
               </slide>
             </carousel>
@@ -34,6 +34,17 @@
       ...mapState({
         slides: (state) => state.slides,
       }),
+      videos() {
+        return this.slides.map((video, i) => {
+          return {
+            id: video?.description?.meta_title ?? undefined,
+            thumbnail: video.image,
+            viewed: video.viewed,
+            name: video?.description?.name ?? "",
+            i: i + 1
+          }
+        })
+      }
     },
     methods: {
       updateItemsPerPage() {

@@ -2,111 +2,72 @@
   <div>
     <SectionBar name="List videos" />
     <div>
-      <ul class="grid grid-cols-2 min-[540px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-        <li v-for="item in videos" :key="item.id" class="max-w-[200px] overflow-hidden">
+      <ul
+        class="grid grid-cols-2 min-[540px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
+      >
+        <li
+          v-for="item in videos"
+          :key="item.id"
+          class="max-w-[200px] overflow-hidden"
+        >
           <VideoVertical :item="item" />
         </li>
       </ul>
     </div>
+    <button
+      v-if="this.pagination.next_page_url"
+      @click="goNext()"
+      class="bg-[rgba(255,255,255,.1)] text-[#fff] rounded-full w-full my-4 h-10 hover:bg-[#ffffff1a]"
+    >
+      View more
+    </button>
   </div>
 </template>
 
 <script>
-import SectionBar from '~/components/SectionBar.vue';
-import VideoVertical from '../Common/VideoVertical.vue';
-  export default {
-    name: "ListVideos",
-    components: {
-      SectionBar,
-      VideoVertical
+import { mapState } from 'vuex'
+import SectionBar from '~/components/SectionBar.vue'
+import VideoVertical from '../Common/VideoVertical.vue'
+export default {
+  name: 'ListVideos',
+  components: {
+    SectionBar,
+    VideoVertical,
+  },
+  data() {
+    return {
+      defaultPagination: {
+        next_page_url: null,
+        prev_page_url: null,
+        total: 0,
+      },
+    }
+  },
+  computed: {
+    ...mapState({
+      products: (state) => state.products,
+    }),
+    videos() {
+      return this.products?.list?.map((video) => {
+        return {
+          id: video?.description?.meta_title ?? undefined,
+          thumbnail: video.image,
+          viewed: video.viewed,
+          name: video?.description?.name ?? '',
+        }
+      })
     },
-    data() {
-      return {
-        videos: [
-          {
-            id: 1,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 11,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 12,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 14,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 15,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 121,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 2131,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 141,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 1412,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 1414,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 14156,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 6451,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-          {
-            id: 42341,
-            imageUrl: "https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj",
-            title: 'Dau pha thuong khung',
-            viewed: '9754'
-          },
-        ]
-      }
+    pagination() {
+      return this.products.pagination ?? this.defaultPagination
     },
-  }
+  },
+  methods: {
+    goNext() {
+      if (!this.pagination.next_page_url) return
+      this.$store.dispatch('getViewMore', this.pagination.next_page_url)
+    },
+  },
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
