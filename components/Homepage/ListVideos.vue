@@ -50,7 +50,7 @@ export default {
     videos() {
       return this.products?.list?.map((video) => {
         return {
-          id: video?.description?.meta_title ?? undefined,
+          id: video?.description?.meta_keyword ?? undefined,
           thumbnail: video.image,
           viewed: video.viewed,
           name: video?.description?.name ?? '',

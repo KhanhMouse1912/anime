@@ -12,7 +12,7 @@
                 <li
                   v-for="item in product?.categories"
                   :key="item.id"
-                  @click="onClickTag(item)"
+                  @click="onClickCategory(item)"
                 >
                   <a-tag color="#108ee9" class="!cursor-pointer">
                     {{ item?.category?.description?.name ?? '' }}
@@ -25,7 +25,7 @@
             >
               <iframe
                 id="playerCustomId"
-                :src="product?.url_trainner ?? defaultUrl"
+                :src="product?.options?.[0]?.value ?? defaultUrl"
                 loading="lazy"
                 class="h-full w-full border-none"
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
@@ -117,9 +117,10 @@ export default {
     onRedirectLogin() {
       this.$router.push('/facebook.com')
     },
-    onClickTag(tag) {
-      if (!tag?.category?.description?.meta_title) return;
-      this.$router.push({ name: 'search', query: { tag: tag?.category?.description?.meta_title } })
+    onClickCategory(item) {
+      if (!item?.category?.category_id) return;
+      sessionStorage.setItem("currentCategory", item?.category?.description?.name ?? "");
+      this.$router.push({ name: 'search', query: { category: item?.category?.category_id } });
     },
   },
   mounted() {
