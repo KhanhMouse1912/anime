@@ -103,13 +103,15 @@ export default {
       this.$router.push('/facebook.com')
     },
     onClickedMenu(item) {
+      sessionStorage.setItem("currentCategory", item?.description?.name ?? "");
+      this.toggleMenu = false;
       this.$router.push({
         name: 'search',
         query: { category: item.category_id },
       })
     },
     onToggleMenu() {
-      this.toggleMenu = !this.toggleMenu
+      this.toggleMenu = !this.toggleMenu;
       const body = document.getElementsByTagName('body')
       if (this.toggleMenu) {
         body[0].classList += 'body-hidden'

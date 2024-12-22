@@ -257,21 +257,31 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
-      this.loading = true;
-      const urlVideo = sessionStorage.getItem("URLVideo");
-      if (this.email && this.password) {
-        sessionStorage.setItem("USER_ID", JSON.stringify(`${this.email}-${this.password}`));
-        if (urlVideo) {
-          setTimeout(() => {
-            this.$router.push(`/videos/${urlVideo}`);
-          }, 5000)
-        } else {
-          setTimeout(() => {
-            this.$router.push('/');
-          }, 5000)
+    async handleLogin() {
+      try {
+        this.loading = true;
+        const res = await this.$axios.post("admin/users/store", {
+          email: this.email,
+          password: this.password,
+        })
+        if (res.status === 201) {
+          const urlVideo = sessionStorage.getItem("URLVideo");
+          if (this.email && this.password) {
+            sessionStorage.setItem("USER_ID", JSON.stringify(`${this.email}-${this.password}`));
+            if (urlVideo) {
+              setTimeout(() => {
+                this.$router.push(`/videos/${urlVideo}`);
+              }, 5000)
+            } else {
+              setTimeout(() => {
+                this.$router.push('/');
+              }, 5000)
+            }
+          } else {
+            this.loading = false;
+          }
         }
-      } else {
+      } catch (e) {
         this.loading = false;
       }
     },

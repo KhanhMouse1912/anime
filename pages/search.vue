@@ -2,8 +2,14 @@
   <div class="search">
     <div class="container">
       <h1 class="text-[#fff] text-lg py-4 flex items-center gap-2 text--search">
-        <span v-if="keyword || tag">Search results</span>
-        <span class="line-clamp-1 text-base">"{{ tag ?? keyword ?? category }}"</span>
+        <p class="mb-0 flex items-center gap-0.5" v-if="keyword">
+          <span>Search results </span>
+          <span class="line-clamp-1 text-base">"{{ keyword }}"</span>
+        </p>
+        <p v-else class="mb-0 flex items-center gap-0.5">
+          <span>Categories: </span>
+          <span class="line-clamp-1 text-base">{{ categoryName }}</span>
+        </p>
       </h1>
       <ul
         class="grid grid-cols-2 min-[540px]:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
@@ -16,6 +22,7 @@
           <VideoVertical :item="item" />
         </li>
       </ul>
+      <button @click="viewMoreProducts()">View More</button>
     </div>
   </div>
 </template>
@@ -23,13 +30,35 @@
 <script>
 import VideoVertical from '~/components/Common/VideoVertical.vue'
 export default {
-  async asyncData({ redirect, query }) {
-    const { tag, category, keyword } = query
-    if (!tag && !category && !keyword) redirect('/404');
+  async asyncData({ redirect, $axios, query }) {
+    const {category, keyword } = query
+    if (!category && !keyword) redirect('/404');
+
+    let params = [];
+    if (category) params.push(`categories[]=${encodeURIComponent(category)}`);
+    if (keyword) params.push(`keyword=${encodeURIComponent(keyword)}`);
+
+    let url = params.length ? '?' + params.join('&') : '';
+
+    const searchList = await $axios.$get(`products${url}`);
+    const { products } = searchList;
+    if (!products) redirect('/404');
+    if (searchList.status === 404) redirect('/404');
     return { 
-      tag,
-      category,
-      keyword
+      keyword,
+      category: "category",
+      videos: products?.data?.map((video) => {
+        return {
+          id: video?.description?.meta_keyword ?? undefined,
+          thumbnail: video.image,
+          viewed: video.viewed,
+          name: video?.description?.name ?? '',
+        }
+      }) ?? [],
+      pagination: {
+        current_page: products.current_page,
+        last_page: products.last_page,
+      }
     }
   },
   components: {
@@ -37,104 +66,64 @@ export default {
   },
   data() {
     return {
-      videos: [
-        {
-          id: 1,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 11,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 12,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 14,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 15,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 121,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 2131,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 141,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 1412,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 1414,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 14156,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 6451,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 42341,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-      ],
+      keyword: "",
+      category: "",
+      videos: [],
+      pagination: {
+        current_page: 1,
+        last_page: 1,
+      },
+      categoryName: ""
     }
   },
-  created() {
-    console.log(this.$route)
+   watch: {
+    '$route.query': 'fetchData',
   },
+  methods: {
+    viewMoreProducts() {
+      console.log("product", this.pagination, this.videos)
+    },
+    setCategoryName() {
+      if (process.client) {
+        const currentCategory = sessionStorage.getItem("currentCategory")
+        if (currentCategory) this.categoryName = currentCategory;
+      }
+    },
+    async fetchData() {
+      const { category, keyword } = this.$route.query;
+      console.log("category: ", category, "--keyword--", keyword);
+
+      let params = [];
+      if (category) params.push(`categories[]=${encodeURIComponent(category)}`);
+      if (keyword) params.push(`keyword=${encodeURIComponent(keyword)}`);
+
+      let url = params.length ? '?' + params.join('&') : '';
+      const searchList = await this.$axios.$get(`products${url}`);
+
+      const { products } = searchList;
+      if (!products) redirect('/404');
+      if (searchList.status === 404) redirect('/404');
+
+      this.setCategoryName();
+      this.keyword = keyword;
+      this.category = category;
+      this.videos = products?.data?.map((video) => {
+        return {
+          id: video?.description?.meta_keyword ?? undefined,
+          thumbnail: video.image,
+          viewed: video.viewed,
+          name: video?.description?.name ?? ''
+        }
+      }) ?? [],
+      this.pagination = {
+        current_page: products.current_page,
+        last_page: products.last_page
+      }
+    }
+  },
+  mounted() {
+    this.setCategoryName();
+  }
 }
 </script>
 

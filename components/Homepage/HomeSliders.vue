@@ -37,7 +37,7 @@
       videos() {
         return this.slides.map((video, i) => {
           return {
-            id: video?.description?.meta_title ?? undefined,
+            id: video?.description?.meta_keyword ?? undefined,
             thumbnail: video.image,
             viewed: video.viewed,
             name: video?.description?.name ?? "",
