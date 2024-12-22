@@ -168,8 +168,8 @@ export default {
         .dispatch('admin/createTag', { name: this.formState.name })
         .then(() => {
           this.$message.success('Tạo thành công')
+          this.onReset()
         })
-      this.onReset()
     },
     update() {
       if (!this.formState.id) return
@@ -180,8 +180,8 @@ export default {
         })
         .then(() => {
           this.$message.success('Cập nhật thành công')
+          this.onReset()
         })
-      this.onReset()
     },
     onSubmit() {
       if (this.formState?.id) this.update()
