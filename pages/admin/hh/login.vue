@@ -54,8 +54,8 @@ export default {
   name: 'LoginAdmin',
   data() {
     return {
-      email: 'b4bdf874-8c03-5bd8-8fd7-5e409dfd82c0',
-      password: '4ebd0208-8328-5d69-8c44-ec50939c0967',
+      email: '',
+      password: '',
     }
   },
   methods: {
