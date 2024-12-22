@@ -92,7 +92,7 @@ export default {
   methods: {
     onConfirmDelete(record) {
       if (!record?.id) return
-      this.data = this.data.filter((item) => item.id !== record.id)
+      this.$store.dispatch("admin/removeUser", record.id);
     },
     refreshList() {
       this.$store.dispatch('admin/getUsers')

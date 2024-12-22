@@ -19,7 +19,7 @@
       @click="goNext()"
       class="bg-[rgba(255,255,255,.1)] text-[#fff] rounded-full w-full my-4 h-10 hover:bg-[#ffffff1a]"
     >
-      View more
+      View More
     </button>
   </div>
 </template>

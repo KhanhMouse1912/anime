@@ -39,8 +39,11 @@
             <p class="text-sm line-clamp-[10] text-[#aaa]">
               {{ product?.description?.description ?? '' }}
             </p>
+            <div class="flex items-center flex-wrap gap-2 text-[#aaa]">
+              <span v-for="tag in product?.tags" :key="tag.id">#{{tag?.info?.name ?? '-'}}</span>
+            </div>
             <div class="mt-10">
-              <RelatedVideo />
+              <RelatedVideo :videos="productRelated" />
             </div>
           </div>
           <div class="w-full lg:w-[300px] xl:w-[350px]">
@@ -89,6 +92,14 @@ export default {
     const product = await $axios.$get(`products/${id}`);
     return {
       product: product?.product ?? {},
+      productRelated: product?.products_related?.map(item => {
+        return {
+          id: item?.description?.meta_keyword,
+          thumbnail: item?.image ?? '',
+          name: item?.description?.name ?? '-',
+          viewed: item?.viewed ?? 0,
+        }
+      }) ?? []
     }
   },
   head() {
@@ -109,8 +120,7 @@ export default {
   },
   data() {
     return {
-      defaultUrl:
-        'https://customer-kia89hvfngqmnwh7.cloudflarestream.com/6a79ebf9528678287aa1db15661b5e09/iframe?poster=https%3A%2F%2Fcustomer-kia89hvfngqmnwh7.cloudflarestream.com%2F6a79ebf9528678287aa1db15661b5e09%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600',
+      defaultUrl: ""
     }
   },
   methods: {

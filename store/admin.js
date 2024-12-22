@@ -47,6 +47,19 @@ export const actions = {
     } catch (error) {
     }
   },
+  async removeUser({ commit, state }, id) {
+    try {
+      const res = await this.$axios.get(`admin/users/destroy/${id}`);
+      if (res.status === 201) {
+        const newList = state.customers.filter(item => item.id !== id);
+        commit('SET_STATE_VALUE', {
+          key: 'customers',
+          value: [...newList],
+        })
+      }
+    } catch (error) {
+    }
+  },
   async getProducts({ commit }, payload) {
     try {
       const res = await this.$axios.get(payload ?? "admin/products");
@@ -102,25 +115,6 @@ export const actions = {
     } catch (error) {
     }
   },
-  // async getCookies({ commit }) {
-  //   try {
-  //     const res = await this.$axios.get("cookies");
-  //     commit('SET_STATE_VALUE', {
-  //       key: 'cookies',
-  //       value: {
-  //         list: [
-  //           ...res?.data?.products?.data ?? []
-  //         ],
-  //         pagination: {
-  //           next_page_url: res?.data?.products.next_page_url,
-  //           prev_page_url: res?.data?.products.prev_page_url,
-  //           total: res?.data?.products.total
-  //         }
-  //       },
-  //     })
-  //   } catch (error) {
-  //   }
-  // },
   async getCategories({ commit }, payload) {
     try {
       const res = await this.$axios.get(payload ?? "admin/categories");
@@ -177,7 +171,6 @@ export const actions = {
   async getTags({ commit }, payload) {
     try {
       const res = await this.$axios.get(payload ?? "admin/tags");
-      console.log("ta", res.data)
       commit('SET_STATE_VALUE', {
         key: 'tags',
         value: res?.data?.tags ?? [],
@@ -202,7 +195,7 @@ export const actions = {
     try {
       const res = await this.$axios.post(`admin/tags/update/${payload.id}`, payload.data);
       if (res.status === 200) {
-        dispatch("getCategories")
+        dispatch("getTags")
       }
     } catch (error) {
     }

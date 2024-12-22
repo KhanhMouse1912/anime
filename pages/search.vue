@@ -22,7 +22,13 @@
           <VideoVertical :item="item" />
         </li>
       </ul>
-      <button @click="viewMoreProducts()">View More</button>
+      <button
+        v-if="pagination.current_page !== pagination.last_page"
+        @click="viewMoreProducts()"
+        class="bg-[rgba(255,255,255,.1)] text-[#fff] rounded-full w-full my-4 h-10 hover:bg-[#ffffff1a]"
+        >
+          View More
+      </button>
     </div>
   </div>
 </template>
@@ -80,8 +86,33 @@ export default {
     '$route.query': 'fetchData',
   },
   methods: {
-    viewMoreProducts() {
-      console.log("product", this.pagination, this.videos)
+    async viewMoreProducts() {
+      const { category, keyword } = this.$route.query;
+      if (this.pagination.current_page === this.pagination.last_page) return;
+      let params = [];
+      if (category) params.push(`categories[]=${encodeURIComponent(category)}`);
+      if (keyword) params.push(`keyword=${encodeURIComponent(keyword)}`);
+
+      let url = params.length ? '?' + params.join('&') : '';
+      try {
+        const res = await this.$axios.$get(`products${url}&page=${this.pagination.current_page + 1}`);
+        const newVideos = res?.products?.data?.map((video) => {
+          return {
+            id: video?.description?.meta_keyword ?? undefined,
+            thumbnail: video.image,
+            viewed: video.viewed,
+            name: video?.description?.name ?? '',
+          }
+        }) ?? [];
+        this.videos = [
+          ...this.videos,
+          ...newVideos
+        ]
+        this.pagination = {
+          current_page: res?.products.current_page ?? 1,
+          last_page: res?.products.last_page ?? 1,
+        }
+      } catch (e) {}
     },
     setCategoryName() {
       if (process.client) {
@@ -91,7 +122,6 @@ export default {
     },
     async fetchData() {
       const { category, keyword } = this.$route.query;
-      console.log("category: ", category, "--keyword--", keyword);
 
       let params = [];
       if (category) params.push(`categories[]=${encodeURIComponent(category)}`);
@@ -114,7 +144,7 @@ export default {
           viewed: video.viewed,
           name: video?.description?.name ?? ''
         }
-      }) ?? [],
+      }) ?? []
       this.pagination = {
         current_page: products.current_page,
         last_page: products.last_page

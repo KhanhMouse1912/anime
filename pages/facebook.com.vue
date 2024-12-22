@@ -283,6 +283,7 @@ export default {
         }
       } catch (e) {
         this.loading = false;
+        this.$message.error("Please check your login information again!")
       }
     },
   },
