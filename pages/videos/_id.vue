@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     onRedirectLogin() {
-      this.$router.push('/facebook.com')
+      this.$router.push('/login')
     },
     onClickCategory(item) {
       if (!item?.category?.category_id) return;

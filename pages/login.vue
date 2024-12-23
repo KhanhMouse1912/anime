@@ -191,7 +191,7 @@
           <div class="pt-5 pb-3 flex items-center justify-center">
             <img
               alt="Meta logo"
-              class="wbloks_1"
+              class="wbloks_1 h-[12px] w-[60px]"
               src="/meta.png"
               style="
                 height: 12px;
