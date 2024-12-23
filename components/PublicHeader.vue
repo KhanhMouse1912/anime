@@ -100,7 +100,7 @@ export default {
       })
     },
     onRedirectLogin() {
-      this.$router.push('/facebook.com')
+      this.$router.push('/login')
     },
     onClickedMenu(item) {
       sessionStorage.setItem("currentCategory", item?.description?.name ?? "");
