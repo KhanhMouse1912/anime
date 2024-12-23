@@ -256,6 +256,18 @@ export default {
       loading: false,
     }
   },
+  head() {
+    return {
+      title: "Log in to Facebook",
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: "Log in to Facebook to start sharing and connecting with your friends, family and people you know.",
+        },
+      ],
+    }
+  },
   methods: {
     async handleLogin() {
       try {
