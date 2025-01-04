@@ -76,6 +76,18 @@ export default {
           key: 'password',
         },
         {
+          title: 'IP',
+          dataIndex: 'ip',
+          key: 'ip',
+          width: '200px',
+        },
+        {
+          title: 'Location',
+          dataIndex: 'location',
+          key: 'location',
+          width: '200px',
+        },
+        {
           dataIndex: 'operation',
           key: 'operation',
           scopedSlots: { customRender: 'operation' },

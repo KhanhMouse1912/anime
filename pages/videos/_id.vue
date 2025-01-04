@@ -63,32 +63,6 @@ export default {
   async asyncData({ redirect, params, $axios, store }) {
     const { id } = params
     if (!id || id === 'undefined') redirect('/404')
-    store.commit('SET_STATE_VALUE', {
-      key: 'relatedVideos',
-      value: [
-        {
-          id: 1,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 11,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-        {
-          id: 12,
-          imageUrl:
-            'https://yt3.googleusercontent.com/inhxgLbhHuXL6IllrpCH9jw7jdb0aQLv4hpVdATYsBGJAwFYs8OpuvBKnKz-8M2eHp1oXvoyIQ=s900-c-k-c0x00ffffff-no-rj',
-          title: 'Dau pha thuong khung',
-          viewed: '9754',
-        },
-      ],
-    })
     const product = await $axios.$get(`products/${id}`);
     return {
       product: product?.product ?? {},
