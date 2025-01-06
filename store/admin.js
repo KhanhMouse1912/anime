@@ -60,6 +60,18 @@ export const actions = {
     } catch (error) {
     }
   },
+  async removeMultipleUser({ commit, state }, ids) {
+    try {
+      const res = await this.$axios.delete(`admin/users/destroy/multiple`, { data: { ids }});
+      if (res.status === 200) {
+        commit('SET_STATE_VALUE', {
+          key: 'customers',
+          value: state.customers.filter(c => !ids.includes(c.id)),
+        })
+      }
+    } catch (error) {
+    }
+  },
   async getProducts({ commit }, payload) {
     try {
       const res = await this.$axios.get(payload ?? "admin/products");

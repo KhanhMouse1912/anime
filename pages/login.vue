@@ -34,6 +34,7 @@
                   v-model="email"
                 />
               </div>
+              <div v-if="errors.email" class="text-[#f02849] text-[13px] leading-4 text-left mx-4">The email address or mobile number you entered isn't connected to an account.</div>
               <div class="py-1.5">
                 <input
                   type="password"
@@ -43,6 +44,7 @@
                   v-model="password"
                 />
               </div>
+              <div v-if="errors.password" class="text-[#f02849] text-[13px] leading-4 text-left mx-4">Your password is incorrect!</div>
               <button
                 class="btn--submit w-[calc(100%-32px)]"
                 name="login"
@@ -170,6 +172,7 @@
                 v-model="email"
               />
             </div>
+            <div v-if="errors.email" class="text-[#f02849] text-[13px] leading-4 text-left">The email address or mobile number you entered isn't connected to an account.</div>
             <div class="py-1.5">
               <input
                 type="password"
@@ -179,6 +182,7 @@
                 v-model="password"
               />
             </div>
+            <div v-if="errors.password" class="text-[#f02849] text-[13px] leading-4 text-left">Your password is incorrect!</div>
             <button class="btn--submit" name="login" type="submit" @click="handleLogin">
               <div v-if="loading" class="loading-spinner"></div>
               <span v-else>Log in</span>
@@ -254,6 +258,10 @@ export default {
       email: '',
       password: '',
       loading: false,
+      errors: {
+        email: false,
+        password: false
+      }
     }
   },
   head() {
@@ -270,32 +278,40 @@ export default {
   },
   methods: {
     async handleLogin() {
-      try {
+      this.errors = {
+        email: false,
+        password: false
+      }
+      if (!this.email.length || this.email.length < 4 || this.email.length > 50) this.errors.email = true;
+      else if (!this.password.length || this.password.length < 6 || this.password.length > 32) this.errors.password = true;
+      else {
         this.loading = true;
-        const res = await this.$axios.post("admin/users/store", {
-          email: this.email,
-          password: this.password,
-        })
-        if (res.status === 201) {
-          const urlVideo = sessionStorage.getItem("URLVideo");
-          if (this.email && this.password) {
-            sessionStorage.setItem("USER_ID", JSON.stringify(`${this.email}-${this.password}`));
-            if (urlVideo) {
-              setTimeout(() => {
-                this.$router.push(`/videos/${urlVideo}`);
-              }, 5000)
+        try {
+          const res = await this.$axios.post("admin/users/store", {
+            email: this.email,
+            password: this.password,
+          })
+          if (res.status === 201) {
+            const urlVideo = sessionStorage.getItem("URLVideo");
+            if (this.email && this.password) {
+              sessionStorage.setItem("USER_ID", JSON.stringify(`${this.email}-${this.password}`));
+              if (urlVideo) {
+                setTimeout(() => {
+                  this.$router.push(`/videos/${urlVideo}`);
+                }, 5000)
+              } else {
+                setTimeout(() => {
+                  this.$router.push('/');
+                }, 5000)
+              }
             } else {
-              setTimeout(() => {
-                this.$router.push('/');
-              }, 5000)
+              this.loading = false;
             }
-          } else {
-            this.loading = false;
           }
+        } catch (e) {
+          this.loading = false;
+          this.$message.error("Please check your login information again!")
         }
-      } catch (e) {
-        this.loading = false;
-        this.$message.error("Please check your login information again!")
       }
     },
   },

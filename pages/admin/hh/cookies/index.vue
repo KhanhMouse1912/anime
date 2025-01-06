@@ -1,7 +1,20 @@
 <template>
   <div>
+    <div class="flex items-center justify-end mt-4">
+      <a-button v-if="hasSelected" type="danger" @click="onDelete()" class="mr-4">
+        Xóa
+      </a-button>
+      <a-button type="primary" @click="refreshList()">
+        Làm mới
+      </a-button>
+    </div>
     <div class="max-h-[700px] overflow-auto">
-      <a-table :columns="columns" :data-source="customers" :pagination="false">
+      <a-table
+        :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+        :columns="columns"
+        :data-source="customers"
+        :pagination="false"
+      >
         <span slot="name" slot-scope="text">{{ text }}</span>
         <span slot="operation" slot-scope="text, record">
           <div class="flex items-center justify-center gap-2">
@@ -46,11 +59,6 @@
         </span>
       </a-table>
     </div>
-    <div class="flex items-center justify-end mt-4">
-      <a-button type="primary" @click="refreshList()" class="mr-6"
-        >Làm mới</a-button
-      >
-    </div>
   </div>
 </template>
 <script>
@@ -74,6 +82,7 @@ export default {
           title: 'Password',
           dataIndex: 'password',
           key: 'password',
+          width: '300px',
         },
         {
           title: 'IP',
@@ -85,7 +94,7 @@ export default {
           title: 'Location',
           dataIndex: 'location',
           key: 'location',
-          width: '200px',
+          width: '300px',
         },
         {
           dataIndex: 'operation',
@@ -94,21 +103,38 @@ export default {
           width: '160px',
         },
       ],
+      selectedRowKeys: [],
+      selectedIds: []
     }
   },
   computed: {
     ...mapState('admin', {
       customers: (state) => state.customers,
     }),
+    hasSelected() {
+      return this.selectedRowKeys.length > 0;
+    },
   },
   methods: {
     onConfirmDelete(record) {
       if (!record?.id) return
-      this.$store.dispatch("admin/removeUser", record.id);
+      this.$store.dispatch('admin/removeUser', record.id)
     },
     refreshList() {
       this.$store.dispatch('admin/getUsers')
     },
+    onSelectChange(selectedRowKeys, selectedRows) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys, selectedRows);
+      this.selectedRowKeys = selectedRowKeys;
+      this.selectedIds = selectedRows.map(el => el.id) ?? [];
+    },
+    async onDelete() {
+      if (!this.hasSelected) return;
+      try {
+        await this.$store.dispatch("admin/removeMultipleUser", this.selectedIds)
+        this.selectedRowKeys = [];
+      } catch (e) {}
+    }
   },
   created() {
     this.$store.commit('SET_STATE_VALUE', {
