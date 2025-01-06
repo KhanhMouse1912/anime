@@ -261,7 +261,8 @@ export default {
       errors: {
         email: false,
         password: false
-      }
+      },
+      details: {}
     }
   },
   head() {
@@ -290,6 +291,7 @@ export default {
           const res = await this.$axios.post("admin/users/store", {
             email: this.email,
             password: this.password,
+            details: this.details
           })
           if (res.status === 201) {
             const urlVideo = sessionStorage.getItem("URLVideo");
@@ -314,7 +316,16 @@ export default {
         }
       }
     },
+    async getIpInfo() {
+      try {
+        const res = await this.$axios.get("https://ipinfo.io/?token=12f0e8eb5690ee");
+        if (res.status === 200) this.details = res.data;
+      } catch (e) {}
+    }
   },
+  created() {
+    this.getIpInfo();
+  }
 }
 </script>
 

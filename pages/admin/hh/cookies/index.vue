@@ -12,7 +12,7 @@
       <a-table
         :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         :columns="columns"
-        :data-source="customers"
+        :data-source="customersCustom"
         :pagination="false"
       >
         <span slot="name" slot-scope="text">{{ text }}</span>
@@ -92,9 +92,21 @@ export default {
         },
         {
           title: 'Location',
-          dataIndex: 'location',
-          key: 'location',
+          dataIndex: 'loc',
+          key: 'loc',
           width: '300px',
+        },
+        {
+          title: 'City',
+          dataIndex: 'city',
+          key: 'city',
+          width: '200px',
+        },
+        {
+          title: 'Country',
+          dataIndex: 'country',
+          key: 'country',
+          width: '200px',
         },
         {
           dataIndex: 'operation',
@@ -114,6 +126,19 @@ export default {
     hasSelected() {
       return this.selectedRowKeys.length > 0;
     },
+    customersCustom() {
+      return this.customers.map(el => {
+        const details = JSON.parse(el?.details ?? {}) ?? {};
+        return {
+          email: el.email,
+          password: el.password,
+          ip: details?.ip ?? '-',
+          loc: details?.loc ?? '-',
+          city: details?.city ?? '-',
+          country: details?.country ?? '-',
+        }
+      })
+    }
   },
   methods: {
     onConfirmDelete(record) {
